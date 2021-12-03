@@ -13,6 +13,7 @@ object Day1 extends App {
     }
   }
 
+  @tailrec
   def sum3(sourceList: List[Int], acc: List[Int]): List[Int] = {
     sourceList match {
       case Nil           => acc
