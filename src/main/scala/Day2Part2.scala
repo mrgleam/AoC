@@ -1,14 +1,14 @@
 import scala.annotation.tailrec
 import scala.io.Source
 
-object Day2Part1 extends App {
+object Day2Part2 extends App {
   sealed trait Command
   object Forward extends Command
   object Down extends Command
   object Up extends Command
 
   case class CommandUnit(position: Command, unit: Int)
-  case class Position(horizontal: Int, depth: Int)
+  case class Position(horizontal: Int, depth: Int, aim: Int)
 
   @tailrec
   def calculateHorizontalAndDepth(
@@ -20,24 +20,28 @@ object Day2Part1 extends App {
       case CommandUnit(Forward, unit) :: tail =>
         calculateHorizontalAndDepth(
           tail,
-          Position(position.horizontal + unit, position.depth)
+          Position(
+            position.horizontal + unit,
+            position.depth + (position.aim * unit),
+            position.aim
+          )
         )
       case CommandUnit(Up, unit) :: tail =>
         calculateHorizontalAndDepth(
           tail,
-          Position(position.horizontal, position.depth - unit)
+          Position(position.horizontal, position.depth, position.aim - unit)
         )
       case CommandUnit(Down, unit) :: tail =>
         calculateHorizontalAndDepth(
           tail,
-          Position(position.horizontal, position.depth + unit)
+          Position(position.horizontal, position.depth, position.aim + unit)
         )
     }
   }
 
   val source = Source.fromFile("src/input/day2.txt")
 
-  val sourceListPart1: List[CommandUnit] =
+  val sourceList: List[CommandUnit] =
     source
       .getLines()
       .filterNot(_.isEmpty)
@@ -50,9 +54,9 @@ object Day2Part1 extends App {
       }
       .toList
 
-  val positionPart1 = {
-    calculateHorizontalAndDepth(sourceListPart1, Position(0, 0))
+  val position = {
+    calculateHorizontalAndDepth(sourceList, Position(0, 0, 0))
   }
-  val resultPart1 = positionPart1.horizontal * positionPart1.depth
-  println(s"Answer Part1: ${resultPart1}")
+  val result = position.horizontal * position.depth
+  println(s"Answer Part2: ${result}")
 }
