@@ -30,20 +30,7 @@ object Day9Part1 extends App {
       lowestPointAcc: List[Int]
   ): List[Int] = {
     sourceList match {
-      case current :: Nil =>
-        var newLowerPoint: List[Int] = lowestPointAcc
-        current.zipWithIndex.foreach { case (c, i) =>
-          val area = Area(c.asDigit, i, previousRow, current, None)
-          if (area.isLowestPoint()) newLowerPoint = newLowerPoint :+ c.asDigit
-        }
-        newLowerPoint
-      case current :: tail if currentRow == 0 =>
-        var newLowerPoint: List[Int] = lowestPointAcc
-        current.zipWithIndex.foreach { case (c, i) =>
-          val area = Area(c.asDigit, i, None, current, tail.headOption)
-          if (area.isLowestPoint()) newLowerPoint = newLowerPoint :+ c.asDigit
-        }
-        lowestPoint(tail, 1, Some(current), newLowerPoint)
+      case Nil => lowestPointAcc
       case current :: tail =>
         var newLowerPoint: List[Int] = lowestPointAcc
         current.zipWithIndex.foreach { case (c, i) =>
