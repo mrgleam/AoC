@@ -3,7 +3,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
 class Day9Part1Spec extends AnyFlatSpec with should.Matchers {
-  "Day 9 Part 1" should "calculate least fuel cost" in {
+  "Day 9 Part 1" should "calculate lowest point" in {
     val input = {
       List(
         "2199943210",
