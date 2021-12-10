@@ -1,3 +1,4 @@
+import scala.annotation.tailrec
 import scala.io.Source
 
 object Day9Part1 extends App {
@@ -17,12 +18,14 @@ object Day9Part1 extends App {
     def Right(): Option[Int] = if ((column + 1) >= currentRow.length) None
     else Some(currentRow(column + 1).asDigit)
 
-    def isLowestPoint() = {
+    def isLowestPoint: Boolean = {
       val nearby =
         List(Top(), Bottom(), Left(), Right()).filter(_.isDefined).flatten
       nearby.forall(_ > currentPoint)
     }
   }
+
+  @tailrec
   def lowestPoint(
       sourceList: List[String],
       currentRow: Int,
@@ -35,7 +38,7 @@ object Day9Part1 extends App {
         var newLowerPoint: List[Int] = lowestPointAcc
         current.zipWithIndex.foreach { case (c, i) =>
           val area = Area(c.asDigit, i, previousRow, current, tail.headOption)
-          if (area.isLowestPoint()) newLowerPoint = newLowerPoint :+ c.asDigit
+          if (area.isLowestPoint) newLowerPoint = newLowerPoint :+ c.asDigit
         }
         lowestPoint(tail, currentRow + 1, Some(current), newLowerPoint)
     }
